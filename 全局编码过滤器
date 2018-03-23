@@ -1,0 +1,65 @@
+package com.hao.crm.filter;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+
+public class MyRequest extends HttpServletRequestWrapper {
+
+	private Map<String,String[]> params =new HashMap<String, String[]>();
+	
+	public MyRequest(HttpServletRequest request) {
+		super(request);
+		
+		Map<String, String[]> map = super.getParameterMap();
+		//String method = request.getMethod();
+	
+		if(map.size() > 0 && map != null){
+			for (Map.Entry<String, String[]> en : map.entrySet()) {
+				String[] values = en.getValue();
+				
+				if(values != null){
+					String[] newValues = new String[values.length];
+					for(int i = 0; i<values.length; i++){
+						try {
+							newValues[i] = new String(values[i].getBytes("ISO-8859-1"),"UTF-8");
+						} catch (UnsupportedEncodingException e) {
+							e.printStackTrace();
+						}
+					}
+					params.put(en.getKey(), newValues);
+				}
+			}
+		}
+	}
+
+	@Override
+	public String getParameter(String name) {
+		String[] strings = params.get(name);
+		if(strings == null){
+			return null;
+		}
+		return strings[0];
+	}
+
+	@Override
+	public String[] getParameterValues(String name) {
+		String[] strings = params.get(name);
+		if(strings == null){
+			return null;
+		}
+		return strings;
+	}
+
+	@Override
+	public Map<String, String[]> getParameterMap() {
+		
+		return params;
+	}
+	
+	
+
+}
