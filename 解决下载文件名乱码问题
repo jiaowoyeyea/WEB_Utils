@@ -1,0 +1,6 @@
+//设置文件名
+		String filename = new String( "美滋滋之老哥下载.xls".getBytes("UTF-8"), "ISO8859-1" );
+		
+		//获得访问的浏览器类型
+		//String agent = ServletActionContext.getRequest().getHeader("User-Agent");
+		ServletActionContext.getResponse().setHeader( "Content-Disposition", "attachment;filename=" + filename );
