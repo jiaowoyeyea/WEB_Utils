@@ -1,0 +1,24 @@
+<script type="text/javascript">
+			$.fn.serializeJson=function(){  
+	            var serializeObj={};  
+	            var array=this.serializeArray();
+	            $(array).each(function(){  
+	                if(serializeObj[this.name]){  
+	                    if($.isArray(serializeObj[this.name])){  
+	                        serializeObj[this.name].push(this.value);  
+	                    }else{  
+	                        serializeObj[this.name]=[serializeObj[this.name],this.value];  
+	                    }  
+	                }else{  
+	                    serializeObj[this.name]=this.value;   
+	                }  
+	            });  
+	            return serializeObj;  
+	        }; 
+				$("#btn").click(function(){
+					var p = $("#表单").serializeJson();
+					//从新发起AJAX请求
+					$("#datagrid表格").datagrid("load",p);
+					$("#window弹窗id").window("close");
+				});
+			</script>
